@@ -1,6 +1,0 @@
-@GameHub.MatchService_HostAddress = http://localhost:5016
-
-GET {{GameHub.MatchService_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
