@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - game-manager
+
+  game-manager:
+    build:
+      context: ./backend-services/GameManager
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"

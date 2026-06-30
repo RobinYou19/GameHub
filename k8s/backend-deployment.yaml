@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-manager-deployment
+  labels:
+    app: game-manager
+spec:
+  replicas: 1 # On commence avec 1 seule instance de notre API
+  selector:
+    matchLabels:
+      app: game-manager
+  template:
+    metadata:
+      labels:
+        app: game-manager
+    spec:
+      containers:
+      - name: game-manager
+        image: gamehub-gamemanager:v1
+        imagePullPolicy: Never # Dit à K8s d'utiliser l'image locale qu'on a buildée avec Docker
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: game-manager-service
+spec:
+  type: NodePort # Permet d'exposer le service pour qu'on puisse y accéder depuis notre machine
+  selector:
+    app: game-manager
+  ports:
+    - protocol: TCP
+      port: 8080      # Port interne au cluster K8s
+      targetPort: 8080 # Port du conteneur .NET
+      nodePort: 30001  # Port accessible depuis ton navigateur (localhost:30001)
